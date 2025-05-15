@@ -1,6 +1,6 @@
-let kotae = Math.floor(Math.random() * 10) + 1; // 1〜10のランダムな整数
+let kotae = Math.floor(Math.random() * 10) + 1; 
 let kaisu = 1;
-let finished = false; // ゲーム終了フラグ
+let finished = false; 
 
 console.log("正解（デバッグ用）: " + kotae);
 
