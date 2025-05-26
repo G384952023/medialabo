@@ -29,8 +29,3 @@ const dummyWeatherData = {
     document.getElementById("result").innerHTML = html;
   });
   
-  document.getElementById("searchButton").addEventListener("click", function () {
-    const keyword = document.getElementById("searchInput").value;
-    console.log("検索キー:", keyword);
-  });
-  

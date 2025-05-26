@@ -33,13 +33,48 @@ function print(data) {
 
 // 課題5-1 の関数 printDom() はここに記述すること
 function printDom(data) {
+  // 既存の div#result があれば削除
+  const existing = document.getElementById("result");
+  if (existing) {
+    existing.remove();
+  }
 
+  // 新しい div#result を作成して body に追加
+  const resultDiv = document.createElement("div");
+  resultDiv.id = "result";
+  document.body.appendChild(resultDiv);
+
+  const weather = data.weather[0];
+  const sunrise = new Date(data.sys.sunrise * 1000);
+  const sunset = new Date(data.sys.sunset * 1000);
+
+  resultDiv.innerHTML = `
+    <p><strong>都市:</strong> ${data.name}</p>
+    <p><strong>国:</strong> ${data.sys.country}</p>
+    <p><strong>天気:</strong> ${weather.main}</p>
+    <p><strong>天気の詳細:</strong> ${weather.description}</p>
+    <p><strong>天気アイコン:</strong> ${weather.icon}</p>
+    <p><strong>現在の気温:</strong> ${data.main.temp} ℃</p>
+    <p><strong>体感温度:</strong> ${data.main.feels_like} ℃</p>
+    <p><strong>最低気温:</strong> ${data.main.temp_min} ℃</p>
+    <p><strong>最高気温:</strong> ${data.main.temp_max} ℃</p>
+    <p><strong>湿度:</strong> ${data.main.humidity} %</p>
+    <p><strong>気圧:</strong> ${data.main.pressure} hPa</p>
+    <p><strong>風速:</strong> ${data.wind.speed} m/s</p>
+    <p><strong>風向:</strong> ${data.wind.deg} °</p>
+    <p><strong>風の突風:</strong> ${data.wind.gust ?? "なし"} m/s</p>
+    <p><strong>雲の割合:</strong> ${data.clouds.all} %</p>
+    <p><strong>日の出:</strong> ${sunrise.toLocaleTimeString()}</p>
+    <p><strong>日の入り:</strong> ${sunset.toLocaleTimeString()}</p>
+  `;
 }
 
 // 課題5-1 のイベントハンドラの定義
 function show() {
-
+  printDom(data); // dataはグローバル変数として与えられている前提
 }
+
+
 
 // 課題5-1, 6-1 のイベントハンドラ登録処理は以下に記述
 

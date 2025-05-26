@@ -14,5 +14,28 @@ let gakka = [
 	{name: "デザイン学科", ename: "Department of Design"}
 ];
 
-//////////////// ここから下にプログラムを書きたそう!
 
+   //////////////// ここから下にプログラムを書きたそう!
+   let count = true;
+   
+   if(count){
+	let b = document.querySelector('button#show');
+	b.addEventListener('click', show);
+   }
+   
+   function show(){
+	count = false;
+	let p = document.createElement('p');
+	let h2 = document.querySelector('h2#addr');
+	p.textContent = campus.address;
+	h2.insertAdjacentElement('afterend', p);
+   
+	let u = document.createElement('ul');
+	h2 = document.querySelector('h2#dept');
+	h2.insertAdjacentElement('afterend', u);
+	for(dep of gakka){
+	 let l = document.createElement('li');
+	 l.textContent = dep.name;
+	 u.insertAdjacentElement('beforeend', l);
+	}
+   }
