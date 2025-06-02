@@ -7,7 +7,6 @@ function print(data) {
   let weather = data.weather[0];
   console.log("天気: " + weather.main);
   console.log("天気の詳細: " + weather.description);
-  console.log("天気アイコン: " + weather.icon);
 
   console.log("現在の気温: " + data.main.temp + "℃");
   console.log("体感温度: " + data.main.feels_like + "℃");
@@ -23,8 +22,6 @@ function print(data) {
 
   console.log("雲の割合: " + data.clouds.all + "%");
 
-  let sunrise = new Date(data.sys.sunrise * 1000);
-  let sunset = new Date(data.sys.sunset * 1000);
   console.log("日の出: " + sunrise.toLocaleTimeString());
   console.log("日の入り: " + sunset.toLocaleTimeString());
 }
@@ -33,63 +30,114 @@ function print(data) {
 
 // 課題5-1 の関数 printDom() はここに記述すること
 function printDom(data) {
-  // 既存の div#result があれば削除
-  const existing = document.getElementById("result");
-  if (existing) {
-    existing.remove();
+  let old = document.querySelector('div#result');
+  if (old !== null) {
+    old.remove();
   }
-
   // 新しい div#result を作成して body に追加
-  const resultDiv = document.createElement("div");
+  let resultDiv = document.createElement("div");
   resultDiv.id = "result";
   document.body.appendChild(resultDiv);
+   
+  let pop = document.querySelector('div#result');
 
-  const weather = data.weather[0];
-  const sunrise = new Date(data.sys.sunrise * 1000);
-  const sunset = new Date(data.sys.sunset * 1000);
+let a1 = document.createElement('p');
+a1.textContent = "都市: " + data.name;
+pop.appendChild(a1);
 
-  resultDiv.innerHTML = `
-    <p><strong>都市:</strong> ${data.name}</p>
-    <p><strong>国:</strong> ${data.sys.country}</p>
-    <p><strong>天気:</strong> ${weather.main}</p>
-    <p><strong>天気の詳細:</strong> ${weather.description}</p>
-    <p><strong>天気アイコン:</strong> ${weather.icon}</p>
-    <p><strong>現在の気温:</strong> ${data.main.temp} ℃</p>
-    <p><strong>体感温度:</strong> ${data.main.feels_like} ℃</p>
-    <p><strong>最低気温:</strong> ${data.main.temp_min} ℃</p>
-    <p><strong>最高気温:</strong> ${data.main.temp_max} ℃</p>
-    <p><strong>湿度:</strong> ${data.main.humidity} %</p>
-    <p><strong>気圧:</strong> ${data.main.pressure} hPa</p>
-    <p><strong>風速:</strong> ${data.wind.speed} m/s</p>
-    <p><strong>風向:</strong> ${data.wind.deg} °</p>
-    <p><strong>風の突風:</strong> ${data.wind.gust ?? "なし"} m/s</p>
-    <p><strong>雲の割合:</strong> ${data.clouds.all} %</p>
-    <p><strong>日の出:</strong> ${sunrise.toLocaleTimeString()}</p>
-    <p><strong>日の入り:</strong> ${sunset.toLocaleTimeString()}</p>
-  `;
+let a2 = document.createElement('p');
+a2.textContent = "天気: " + data.weather[0].main;
+pop.appendChild(a2);
+
+let a3 = document.createElement('p');
+a3.textContent = "天気の詳細: " + data.weather[0].description;
+pop.appendChild(a3);
+
+let a5 = document.createElement('p');
+a5.textContent = "現在の気温: " + data.main.temp + "℃";
+pop.appendChild(a5);
+
+let a6 = document.createElement('p');
+a6.textContent = "体感温度: " + data.main.feels_like + "℃";
+pop.appendChild(a6);
+
+let a7 = document.createElement('p');
+a7.textContent = "最低気温: " + data.main.temp_min + "℃";
+pop.appendChild(a7);
+
+let a8 = document.createElement('p');
+a8.textContent = "最高気温: " + data.main.temp_max + "℃";
+pop.appendChild(a8);
+
+let a9 = document.createElement('p');
+a9.textContent = "湿度: " + data.main.humidity + "%";
+pop.appendChild(a9);
+
+let a10 = document.createElement('p');
+a10.textContent = "気圧: " + data.main.pressure + "hPa";
+pop.appendChild(a10);
+
+let a11 = document.createElement('p');
+a11.textContent = "風速: " + data.wind.speed + "m/s";
+pop.appendChild(a11);
+
+let a12 = document.createElement('p');
+a12.textContent = "風向: " + data.wind.deg + "°";
+pop.appendChild(a12);
+
+let a13 = document.createElement('p');
+a13.textContent = "風の突風: " + data.wind.gust + "m/s";
+pop.appendChild(a13);
+
+let a14 = document.createElement('p');
+a14.textContent = "雲の割合: " + data.clouds.all + "%";
+pop.appendChild(a14);
+
+let sunrise = new Date(data.sys.sunrise * 1000);
+let a15 = document.createElement('p');
+a15.textContent = "日の出: " + sunrise.toLocaleTimeString();
+pop.appendChild(a15);
+
+let sunset = new Date(data.sys.sunset * 1000);
+let a16 = document.createElement('p');
+a16.textContent = "日の入り: " + sunset.toLocaleTimeString();
+pop.appendChild(a16);
 }
-
-// 課題5-1 のイベントハンドラの定義
-function show() {
-  printDom(data); // dataはグローバル変数として与えられている前提
-}
-
-
-
-// 課題5-1, 6-1 のイベントハンドラ登録処理は以下に記述
-
-
-
 
 // 課題6-1 のイベントハンドラ sendRequest() の定義
 function sendRequest() {
-
-}
+    let key;
+    let select = document.querySelector("select#citySelect");
+    key = select.value;
+    let url = 'https://www.nishita-lab.org/web-contents/jsons/openweather/'+key+'.json';
+  console.log(url);
+  axios.get(url)
+      .then(showResult)
+      .catch(showError)
+      .finally(finish);
+  }
+let u =document.querySelector('button#searchButton');
+u.addEventListener('click', sendRequest);
 
 // 課題6-1: 通信が成功した時の処理は以下に記述
 function showResult(resp) {
+  // サーバから送られてきたデータを出力
+  console.log(resp);
+  let data = resp.data;
 
+  // data が文字列型なら，オブジェクトに変換する
+  if (typeof data === 'string') {
+      data = JSON.parse(data);
+  }
+
+  // data をコンソールに出力
+  console.log(data);
+
+  // data.x を出力
+  console.log(data.x);
+  printDom(data);
 }
+
 
 // 課題6-1: 通信エラーが発生した時の処理
 function showError(err) {
@@ -100,55 +148,3 @@ function showError(err) {
 function finish() {
     console.log('Ajax 通信が終わりました');
 }
-
-////////////////////////////////////////
-// 以下はグルメのデータサンプル
-// 注意: 第5回までは以下を変更しないこと！
-// 注意2: 課題6-1 で以下をすべて削除すること
-let data = {
-  "coord": {
-    "lon": 116.3972,
-    "lat": 39.9075
-  },
-  "weather": [
-    {
-      "id": 803,
-      "main": "Clouds",
-      "description": "曇りがち",
-      "icon": "04d"
-    }
-  ],
-  "base": "stations",
-  "main": {
-    "temp": 9.94,
-    "feels_like": 8.65,
-    "temp_min": 9.94,
-    "temp_max": 9.94,
-    "pressure": 1022,
-    "humidity": 14,
-    "sea_level": 1022,
-    "grnd_level": 1016
-  },
-  "visibility": 10000,
-  "wind": {
-    "speed": 2.65,
-    "deg": 197,
-    "gust": 4.84
-  },
-  "clouds": {
-    "all": 53
-  },
-  "dt": 1646542386,
-  "sys": {
-    "type": 1,
-    "id": 9609,
-    "country": "CN",
-    "sunrise": 1646520066,
-    "sunset": 1646561447
-  },
-  "timezone": 28800,
-  "id": 1816670,
-  "name": "北京市",
-  "cod": 200
-};
-
